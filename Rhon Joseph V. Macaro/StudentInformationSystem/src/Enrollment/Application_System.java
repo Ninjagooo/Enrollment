@@ -292,7 +292,6 @@ public class Application_System extends JFrame {
 						
 						pst.executeUpdate();
 						
-						con.commit();
 						
 						
 					} catch (SQLException e1) {

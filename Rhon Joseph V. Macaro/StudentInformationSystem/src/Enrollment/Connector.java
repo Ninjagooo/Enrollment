@@ -12,7 +12,6 @@ public class Connector {
 		
 		try {	
 			conn = DriverManager.getConnection("Jdbc:sqlite:C://hello//roxy.db");
-			conn.setAutoCommit(false);
 			//JOptionPane.showMessageDialog(null, "Successfully Connected");
 			return conn;
 		} catch (Exception e) {
