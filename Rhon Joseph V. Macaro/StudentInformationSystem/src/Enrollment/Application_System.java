@@ -33,6 +33,7 @@ import javax.swing.text.DocumentFilter;
 import javax.swing.text.DocumentFilter.FilterBypass;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import javax.swing.JTextArea;
 
 public class Application_System extends JFrame {
 
@@ -210,11 +211,104 @@ public class Application_System extends JFrame {
 		lblStrand.setBounds(527, 57, 95, 21);
 		contentPane.add(lblStrand);
 		
+		JLabel lblyear = new JLabel("Grade :");
+		lblyear.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblyear.setForeground(Color.BLACK);
+		lblyear.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblyear.setBounds(527, 90, 95, 21);
+		contentPane.add(lblyear);
+		
+		JComboBox grade = new JComboBox();
+		grade.setModel(new DefaultComboBoxModel(new String[] {"11", "12"}));
+		grade.setFont(new Font("Tahoma", Font.BOLD, 14));
+		grade.setBounds(632, 91, 115, 21);
+		contentPane.add(grade);
+		
+		JTextArea subject = new JTextArea();
+		subject.setBounds(550, 122, 377, 149);
+		contentPane.add(subject);
+		
 		JComboBox strand = new JComboBox();
 		strand.setFont(new Font("Tahoma", Font.BOLD, 14));
-		strand.setModel(new DefaultComboBoxModel(new String[] {"ABM", "STEM", "GAS", "TVL-HE", "TVL-ICT"}));
+		strand.setModel(new DefaultComboBoxModel(new String[] {"ABM", "STEM", "HUMSS", "GAS", "TVL-ICT", "TVL-HE"}));
 		strand.setBounds(632, 57, 115, 21);
 		contentPane.add(strand);
+		strand.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String selectedStrand = strand.getSelectedItem().toString();
+	            int selectedYear = Integer.parseInt(grade.getSelectedItem().toString());
+	            
+	            displaySubjectsForCourse(selectedYear, selectedStrand);
+				
+			}
+
+			private void displaySubjectsForCourse(int year, String Strand) {
+				String subjects;
+		        switch (Strand) {
+		            case "ABM":
+		                subjects = (year == 11) ? "Applied Economics\r\n"
+		                						+ "Business Ethics and Social Responsibility\r\n"
+		                						+ "Fundamentals of Accountancy, Business, and Management 1\r\n"
+		                						+ "Business Math" : 
+		                						"Principles of Marketing\r\n"
+		                						+ "Business Finance\r\n"
+		                						+ "Business Enterprise Simulation\r\n"
+		                						+ "Fundamentals of Accountancy, Business, and Management 2";
+		                break;
+		            case "STEM":
+		                subjects = (year == 11) ? "Mathematics\r\n" 
+		                						+ "Physics\r\n" + 
+		                						"Chemistry\r\n" + 
+		                						"Computer Science\r\n" : 
+		                						"Advanced Mathematics\r\n" 
+		                						+ "Advanced Physics\r\n" 
+		                						+ "Advanced Chemistry\r\n" 
+		                						+ "Advanced Computer Science\r\n";
+		                break;
+		            case "HUMSS":
+		                subjects = (year == 11) ? "Creative Writing/Media and Information Literacy\r\n"
+		                						+ "Creative Nonfiction\r\n"
+		                						+ "Trends, Networks, Critical Thinking in the 21st Century Culture" :
+		                						  "Creative Writing/Media and Information Literacy\r\n"
+		                						+ "Disciplines and Ideas in the Applied Social Sciences\r\n"
+		                						+ "Work Immersion/Research/Career Advocacy/Entrepreneurship";
+		                break;
+		            case "GAS":
+		                subjects = (year == 11) ? "Applied Economics\r\n"
+		                						+ "Organization and Management\r\n"
+		                						+ "Fundamentals of Accountancy, Business, and Management 1" 
+		                						: "Applied Economics\r\n"
+		                						+ "Organization and Management\r\n"
+		                						+ "Fundamentals of Accountancy, Business, and Management 2";
+		            case "TVL-ICT":
+		                subjects = (year == 11) ? "Computer Programming NC IV\r\n"
+		                						+ "Mobile App Development\r\n"
+		                						+ "Web Development\r\n"
+		                						+ "Entrepreneurship":
+		                						"Computer Programming NC IV\r\n"
+		                    					+ "Database Management System\r\n"
+		                    					+ "Systems Analysis and Design\r\n"
+		                    					+ "Entrepreneurship";
+		                break;
+		            case "TVL-HE":
+		                subjects = (year == 11) ? "Bread and Pastry\r\n"
+		                						+ "Food and Beverage\r\n"
+		                						+ "Cookery\r\n"
+		                						+ "Entrepreneurship":
+		                						"Bread and Pastry Production (NC II)\r\n"
+		                    					+ "Cookery (NC II)\r\n"
+		                    					+ "Commercial Cooking (NC III)\r\n"
+		                    					+ "Entrepreneurship";
+		                break;    
+		            default:
+		                subjects = "No subjects available for the selected year and strand.";
+		                break;
+		        }
+		        subject.setText(subjects);
+				
+			}
+		});
+		
 		
 		JComboBox gender = new JComboBox();
 		gender.setModel(new DefaultComboBoxModel(new String[] {"Male", "Female", "Prefer not to say"}));
@@ -314,7 +408,7 @@ public class Application_System extends JFrame {
 			}
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnNewButton.setBounds(774, 293, 138, 39);
+		btnNewButton.setBounds(751, 293, 138, 39);
 		contentPane.add(btnNewButton);
 		
 		JButton btnClear = new JButton("CLEAR");
@@ -329,68 +423,17 @@ public class Application_System extends JFrame {
 				gender.setSelectedItem(null);
 				contact.setText("");
 				email.setText("");
-				strand.setSelectedItem(null);
+				
 			}
 		});
 		btnClear.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnClear.setBounds(604, 293, 138, 39);
+		btnClear.setBounds(576, 293, 138, 39);
 		contentPane.add(btnClear);
 		
-		JPanel panel1 = new JPanel();
-		panel1.setBounds(537, 90, 400, 189);
-		contentPane.add(panel1);
-		panel1.setLayout(null);
-		
-		JLabel lblNewLabel_1 = new JLabel("Subject Offered");
-		lblNewLabel_1.setForeground(new Color(255, 53, 53));
-		lblNewLabel_1.setBackground(new Color(255, 255, 255));
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setBounds(140, 11, 105, 19);
-		panel1.add(lblNewLabel_1);
-		
-		JLabel sub1 = new JLabel("Business Finance");
-		sub1.setFont(new Font("Tahoma", Font.BOLD, 13));
-		sub1.setBounds(27, 34, 114, 25);
-		panel1.add(sub1);
-		
-		JLabel sub2 = new JLabel("GenMath");
-		sub2.setFont(new Font("Tahoma", Font.BOLD, 13));
-		sub2.setBounds(27, 70, 114, 25);
-		panel1.add(sub2);
-		
-		JLabel sub3 = new JLabel("Practical Research");
-		sub3.setFont(new Font("Tahoma", Font.BOLD, 13));
-		sub3.setBounds(27, 106, 129, 25);
-		panel1.add(sub3);
-		
-		JLabel sub4 = new JLabel("Physical Education");
-		sub4.setFont(new Font("Tahoma", Font.BOLD, 13));
-		sub4.setBounds(27, 142, 129, 25);
-		panel1.add(sub4);
-		
-		JLabel sub5 = new JLabel("Entrepreneurship");
-		sub5.setFont(new Font("Tahoma", Font.BOLD, 13));
-		sub5.setBounds(200, 34, 129, 25);
-		panel1.add(sub5);
-		
-		JLabel sub6 = new JLabel("PerDev");
-		sub6.setFont(new Font("Tahoma", Font.BOLD, 13));
-		sub6.setBounds(200, 70, 129, 25);
-		panel1.add(sub6);
-		
-		JLabel sub7 = new JLabel("21st Century Literature\r\n");
-		sub7.setFont(new Font("Tahoma", Font.BOLD, 13));
-		sub7.setBounds(200, 106, 166, 25);
-		panel1.add(sub7);
-		
 
-		
 		
 		
 	
 		
 	}
 }
-
-

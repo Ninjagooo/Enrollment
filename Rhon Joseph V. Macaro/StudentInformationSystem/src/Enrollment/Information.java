@@ -22,11 +22,20 @@ import javax.swing.JTable;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
+import javax.swing.text.DocumentFilter.FilterBypass;
+
+import com.github.lgooddatepicker.components.DatePicker;
+
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class Information extends JFrame {
 
@@ -36,6 +45,17 @@ public class Information extends JFrame {
 	private static Connection conn;
 	private JTextField searchbar;
 	private DefaultTableModel model;
+	private JTextField fname;
+	private JTextField mname;
+	private JTextField lname;
+	private JTextField age;
+	private JTextField contact;
+	private JTextField email;
+	private JTextField LRN;
+	private JTextField Age;
+	private JTextField Contact;
+	private JTextField Email;
+	private JTextField lrn;
 
 	/**
 	 * Launch the application.
@@ -51,7 +71,7 @@ public class Information extends JFrame {
 		login.setVisible(false);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 935, 444);
+		setBounds(100, 100, 938, 476);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(192, 192, 192));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -60,9 +80,44 @@ public class Information extends JFrame {
 		contentPane.setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 0, 663, 405);
+		scrollPane.setBounds(0, 0, 660, 437);
 		contentPane.add(scrollPane);
 
+		fname = new JTextField();
+		fname.setColumns(10);
+		fname.setBounds(757, 81, 134, 20);
+		contentPane.add(fname);
+		
+		JLabel lblFirstName = new JLabel("FirstName :");
+		lblFirstName.setHorizontalAlignment(SwingConstants.CENTER);
+		lblFirstName.setBounds(682, 81, 65, 20);
+		contentPane.add(lblFirstName);
+		
+		JLabel lblMiddlename = new JLabel("MiddleName :");
+		lblMiddlename.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMiddlename.setBounds(682, 112, 65, 20);
+		contentPane.add(lblMiddlename);
+		
+		mname = new JTextField();
+		mname.setColumns(10);
+		mname.setBounds(757, 112, 134, 20);
+		contentPane.add(mname);
+		
+		JLabel lblLastname = new JLabel("LastName :");
+		lblLastname.setHorizontalAlignment(SwingConstants.CENTER);
+		lblLastname.setBounds(682, 143, 65, 20);
+		contentPane.add(lblLastname);
+		
+		lname = new JTextField();
+		lname.setColumns(10);
+		lname.setBounds(757, 143, 134, 20);
+		contentPane.add(lname);
+		
+		JLabel lblBirthday = new JLabel("Birthday :");
+		lblBirthday.setHorizontalAlignment(SwingConstants.CENTER);
+		lblBirthday.setBounds(682, 174, 65, 20);
+		contentPane.add(lblBirthday);
+		
 		table = new JTable();
 		model = new DefaultTableModel(new Object[][] {}, new String[] { "First Name", "Middle Name", "Last Name",
 				"Birthday", "Age", "Gender", "Contact", "Email", "Strand", "Lrn" });
@@ -73,7 +128,7 @@ public class Information extends JFrame {
 		scrollPane.setViewportView(table);
 
 		searchbar = new JTextField();
-		searchbar.setBounds(789, 50, 116, 25);
+		searchbar.setBounds(771, 11, 134, 25);
 		contentPane.add(searchbar);
 		searchbar.setColumns(10);
 
@@ -120,7 +175,7 @@ public class Information extends JFrame {
 
 		});
 		search.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		search.setBounds(800, 12, 96, 27);
+		search.setBounds(670, 9, 91, 25);
 		contentPane.add(search);
 
 		JButton delete = new JButton("Delete Record");
@@ -133,7 +188,6 @@ public class Information extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				try {
 					String query = "DELETE FROM StudentInformation WHERE LRN =?";
-					conn.commit();
 					PreparedStatement pst = conn.prepareStatement(query);
 					pst.setString(1, searchbar.getText());
 					pst.executeUpdate();
@@ -148,16 +202,130 @@ public class Information extends JFrame {
 
 		});
 
-		delete.setBounds(673, 15, 106, 25);
+		delete.setBounds(771, 42, 134, 25);
 		contentPane.add(delete);
-
-		JButton update = new JButton("Update");
-		update.addActionListener(new ActionListener() {
+		
+		DatePicker birthday = new DatePicker();
+		birthday.setBounds(756, 174, 135, 20);
+		contentPane.add(birthday);
+		
+		JLabel lblAge = new JLabel("Age :");
+		lblAge.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAge.setBounds(682, 205, 65, 20);
+		contentPane.add(lblAge);
+		
+		Age = new JTextField();
+		Age.setColumns(10);
+		Age.setBounds(757, 205, 134, 20);
+		contentPane.add(Age);
+		((AbstractDocument)Age.getDocument()).setDocumentFilter(new DocumentFilter() {
+			  public void insertString(FilterBypass fb, int offset, String string, javax.swing.text.AttributeSet attr) throws BadLocationException {
+			        fb.insertString(offset, string.replaceAll("[^0-9]", ""), attr);
+			      }
+			      
+			      public void replace(FilterBypass fb, int offset, int length, String string, javax.swing.text.AttributeSet attr) throws BadLocationException {
+			        fb.replace(offset, length, string.replaceAll("[^0-9]", ""), attr);
+			      }
+			    });
+		
+		JLabel lblGender = new JLabel("Gender :");
+		lblGender.setHorizontalAlignment(SwingConstants.CENTER);
+		lblGender.setBounds(682, 236, 65, 20);
+		contentPane.add(lblGender);
+		
+		JComboBox gender = new JComboBox();
+		gender.setModel(new DefaultComboBoxModel(new String[] {"Male", "Female", "Prefer Not To Say"}));
+		gender.setBounds(757, 236, 134, 20);
+		contentPane.add(gender);
+		
+		JLabel lblContact = new JLabel("Contact :");
+		lblContact.setHorizontalAlignment(SwingConstants.CENTER);
+		lblContact.setBounds(682, 267, 65, 20);
+		contentPane.add(lblContact);
+		
+		Contact = new JTextField();
+		Contact.setColumns(10);
+		Contact.setBounds(757, 267, 134, 20);
+		contentPane.add(Contact);
+		((AbstractDocument)Contact.getDocument()).setDocumentFilter(new DocumentFilter() {
+			  public void insertString(FilterBypass fb, int offset, String string, javax.swing.text.AttributeSet attr) throws BadLocationException {
+			        fb.insertString(offset, string.replaceAll("[^0-9]", ""), attr);
+			      }
+			      
+			      public void replace(FilterBypass fb, int offset, int length, String string, javax.swing.text.AttributeSet attr) throws BadLocationException {
+			        fb.replace(offset, length, string.replaceAll("[^0-9]", ""), attr);
+			      }
+			    });
+		
+		JLabel lblEmail = new JLabel("Email :");
+		lblEmail.setHorizontalAlignment(SwingConstants.CENTER);
+		lblEmail.setBounds(682, 298, 65, 20);
+		contentPane.add(lblEmail);
+		
+		Email = new JTextField();
+		Email.setColumns(10);
+		Email.setBounds(757, 298, 134, 20);
+		contentPane.add(Email);
+		
+		JLabel lblLrn = new JLabel("Strand :");
+		lblLrn.setHorizontalAlignment(SwingConstants.CENTER);
+		lblLrn.setBounds(682, 329, 65, 20);
+		contentPane.add(lblLrn);
+		
+		JButton Update = new JButton("Update");
+		Update.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		update.setBounds(722, 353, 140, 41);
-		contentPane.add(update);
+		Update.setBounds(757, 391, 134, 32);
+		contentPane.add(Update);
+		
+		JComboBox strand = new JComboBox();
+		strand.setModel(new DefaultComboBoxModel(new String[] {"ABM", "STEM", "HUMSS", "GAS", "TVL-ICT", "TVL-HE"}));
+		strand.setBounds(757, 329, 134, 20);
+		contentPane.add(strand);
+		
+		JLabel lblLrn_2 = new JLabel("LRN :");
+		lblLrn_2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblLrn_2.setBounds(682, 360, 65, 20);
+		contentPane.add(lblLrn_2);
+		
+		lrn = new JTextField();
+		lrn.setColumns(10);
+		lrn.setBounds(757, 360, 134, 20);
+		contentPane.add(lrn);
+		((AbstractDocument)lrn.getDocument()).setDocumentFilter(new DocumentFilter() {
+			  public void insertString(FilterBypass fb, int offset, String string, javax.swing.text.AttributeSet attr) throws BadLocationException {
+			        fb.insertString(offset, string.replaceAll("[^0-9]", ""), attr);
+			      }
+			      
+			      public void replace(FilterBypass fb, int offset, int length, String string, javax.swing.text.AttributeSet attr) throws BadLocationException {
+			        fb.replace(offset, length, string.replaceAll("[^0-9]", ""), attr);
+			      }
+			    });
+		
+		JButton update = new JButton("Update");
+		update.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					String query = "UPDATE StudentInformation set FirstName ='"+fname.getText()+"',MiddleName='"+ mname.getText()+"',LastName='"+ lname.getText()+"',Birthday='"+ birthday.getDateStringOrEmptyString()+"', Age='"+ Age.getText()+"',Gender='"+ gender.getSelectedItem()+"',Contact='"+ Contact.getText()+"',Email = '"+ Email.getText()+"', Strand='"+ strand.getSelectedItem().toString()+"', LRN='"+ lrn.getText()+"' WHERE LRN='"+searchbar.getText()+"'";
+					
+				PreparedStatement pst = conn.prepareStatement(query);
+					
+					pst.execute();
+					
+					JOptionPane.showMessageDialog(null, "Data Updated");
+					
+					pst.close();							
+					
+				}catch(Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+				
+			
+		});
+
 
 	}
 
